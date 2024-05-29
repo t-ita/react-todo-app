@@ -6,6 +6,7 @@ import {TodoItem} from "./TodoItem.tsx";
 import ToolBar from "./ToolBar.tsx";
 import {createTheme, GlobalStyles, ThemeProvider} from "@mui/material";
 import {indigo, pink} from "@mui/material/colors";
+import QR from "./QR.tsx";
 
 const theme = createTheme({
     palette: {
@@ -28,6 +29,7 @@ const App = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [filter, setFilter] = useState<Filter>('all');
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [qrOpen, setQrOpen] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
@@ -75,14 +77,20 @@ const App = () => {
         setDrawerOpen((drawerOpen) => !drawerOpen );
     }
 
+    const handleToggleQR = () => {
+        setQrOpen((qrOpen) => !qrOpen);
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
             <ToolBar filter={filter} onToggleDrawer={handleToggleDrawer} />
             <SideBar
                 drawerOpen={drawerOpen}
+                onToggleQR={handleToggleQR}
                 onToggleDrawer={handleToggleDrawer}
                 onSort={handleSort} />
+            <QR open={qrOpen} onClose={handleToggleQR}/>
             <FormDialog text={text} onSubmit={handleSubmit} onChange={handleChange} />
             <TodoItem todos={todos} filter={filter} onTodo={handleTodo} />
             <ActionButton onEmpty={handleEmpty} todos={todos} />
