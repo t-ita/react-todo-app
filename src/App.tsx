@@ -30,13 +30,18 @@ const App = () => {
     const [filter, setFilter] = useState<Filter>('all');
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [qrOpen, setQrOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setText(e.target.value);
     }
 
     const handleSubmit = () => {
-        if (!text) return;
+        if (!text) {
+            // 何も入力されなかったとき
+            setDialogOpen((dialogOpen) => !dialogOpen);
+            return;
+        }
 
         const newTodo: Todo = {
             value: text,
@@ -47,6 +52,8 @@ const App = () => {
 
         setTodos((todos) => [newTodo, ...todos]);
         setText('');
+        // FormDialog コンポーネントを閉じる
+        setDialogOpen((dialogOpen) => !dialogOpen );
     }
 
     const handleTodo = <K extends keyof Todo, V extends Todo[K]>(
@@ -81,6 +88,11 @@ const App = () => {
         setQrOpen((qrOpen) => !qrOpen);
     }
 
+    const handleToggleDialog = () => {
+        setDialogOpen((dialogOpen) => !dialogOpen);
+        setText('');
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
@@ -89,9 +101,16 @@ const App = () => {
                 drawerOpen={drawerOpen}
                 onToggleQR={handleToggleQR}
                 onToggleDrawer={handleToggleDrawer}
-                onSort={handleSort} />
+                onSort={handleSort}
+            />
             <QR open={qrOpen} onClose={handleToggleQR}/>
-            <FormDialog text={text} onSubmit={handleSubmit} onChange={handleChange} />
+            <FormDialog
+                text={text}
+                dialogOpen={dialogOpen}
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+                onToggleDialog={handleToggleDialog}
+            />
             <TodoItem todos={todos} filter={filter} onTodo={handleTodo} />
             <ActionButton onEmpty={handleEmpty} todos={todos} />
         </ThemeProvider>
