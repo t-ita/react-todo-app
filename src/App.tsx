@@ -27,6 +27,7 @@ const App = () => {
     const [text, setText] = useState('');
     const [todos, setTodos] = useState<Todo[]>([]);
     const [filter, setFilter] = useState<Filter>('all');
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
@@ -70,12 +71,18 @@ const App = () => {
         setTodos((todos) => todos.filter((todo) => !todo.removed));
     }
 
+    const handleToggleDrawer = () => {
+        setDrawerOpen((drawerOpen) => !drawerOpen );
+    }
 
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
-            <ToolBar filter={filter} />
-            <SideBar onSort={handleSort} />
+            <ToolBar filter={filter} onToggleDrawer={handleToggleDrawer} />
+            <SideBar
+                drawerOpen={drawerOpen}
+                onToggleDrawer={handleToggleDrawer}
+                onSort={handleSort} />
             <FormDialog text={text} onSubmit={handleSubmit} onChange={handleChange} />
             <TodoItem todos={todos} filter={filter} onTodo={handleTodo} />
             <ActionButton onEmpty={handleEmpty} todos={todos} />

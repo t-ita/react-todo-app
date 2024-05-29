@@ -1,7 +1,8 @@
 import {AppBar, Box, Icon, IconButton, Toolbar, Typography} from "@mui/material";
 
 type Props = {
-    filter: Filter;
+    filter: Filter,
+    onToggleDrawer: () => void
 }
 
 const translator = (arg: Filter) => {
@@ -20,7 +21,7 @@ const translator = (arg: Filter) => {
 }
 
 const ToolBar = (props: Props) => (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{flexGrow: 1}}>
         <AppBar position="static">
             <Toolbar>
                 <IconButton
@@ -28,7 +29,8 @@ const ToolBar = (props: Props) => (
                     size="large"
                     edge="start"
                     color="inherit"
-                    sx={{ mr: 2 }}
+                    sx={{mr: 2}}
+                    onClick={props.onToggleDrawer}
                 >
                     <Icon>menu</Icon>
                 </IconButton>
