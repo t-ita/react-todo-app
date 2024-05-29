@@ -3,6 +3,24 @@ import FormDialog from "./FormDialog.tsx";
 import ActionButton from "./ActionButton.tsx";
 import SideBar from "./SideBar.tsx";
 import {TodoItem} from "./TodoItem.tsx";
+import ToolBar from "./ToolBar.tsx";
+import {createTheme, GlobalStyles, ThemeProvider} from "@mui/material";
+import {indigo, pink} from "@mui/material/colors";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: indigo[500],
+            light: '#757de8',
+            dark: '#002984',
+        },
+        secondary: {
+            main: pink[500],
+            light: '#ff6090',
+            dark: '#b0003a',
+        },
+    }
+})
 
 const App = () => {
     // 初期値；空文字列
@@ -54,12 +72,14 @@ const App = () => {
 
 
     return (
-        <div>
+        <ThemeProvider theme={theme}>
+            <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
+            <ToolBar filter={filter} />
             <SideBar onSort={handleSort} />
             <FormDialog text={text} onSubmit={handleSubmit} onChange={handleChange} />
             <TodoItem todos={todos} filter={filter} onTodo={handleTodo} />
             <ActionButton onEmpty={handleEmpty} todos={todos} />
-        </div>
+        </ThemeProvider>
     );
 };
 export default App;
