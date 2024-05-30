@@ -7,6 +7,7 @@ import ToolBar from "./ToolBar.tsx";
 import {createTheme, GlobalStyles, ThemeProvider} from "@mui/material";
 import {indigo, pink} from "@mui/material/colors";
 import QR from "./QR.tsx";
+import AlertDialog from "./AlertDialog.tsx";
 
 const theme = createTheme({
     palette: {
@@ -31,6 +32,7 @@ const App = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [qrOpen, setQrOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -93,6 +95,10 @@ const App = () => {
         setText('');
     }
 
+    const handleToggleAlert = () => {
+        setAlertOpen((alertOpen) => !alertOpen);
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
@@ -111,8 +117,19 @@ const App = () => {
                 onChange={handleChange}
                 onToggleDialog={handleToggleDialog}
             />
+            <AlertDialog
+                alertOpen={alertOpen}
+                onEmpty={handleEmpty}
+                onToggleAlert={handleToggleAlert} />
             <TodoItem todos={todos} filter={filter} onTodo={handleTodo} />
-            <ActionButton onEmpty={handleEmpty} todos={todos} />
+            <ActionButton
+                todos={todos}
+                filter={filter}
+                alertOpen={alertOpen}
+                dialogOpen={dialogOpen}
+                onToggleAlert={handleToggleAlert}
+                onToggleDialog={handleToggleDialog}
+            />
         </ThemeProvider>
     );
 };
