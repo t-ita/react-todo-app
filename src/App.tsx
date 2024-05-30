@@ -9,6 +9,7 @@ import {indigo, pink} from "@mui/material/colors";
 import QR from "./QR.tsx";
 import AlertDialog from "./AlertDialog.tsx";
 import * as localforage from "localforage";
+import {isTodos} from "./lib/isTodos.ts";
 
 const theme = createTheme({
     palette: {
@@ -41,7 +42,7 @@ const App = () => {
     useEffect(() => {
         localforage
             .getItem('todo-202405-study')
-            .then((values) => setTodos(values as Todo[]))
+            .then((values) => isTodos(values) && setTodos(values as Todo[]))
     }, []);
 
     useEffect(() => {
