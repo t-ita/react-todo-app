@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FormDialog from "./FormDialog.tsx";
 import ActionButton from "./ActionButton.tsx";
 import SideBar from "./SideBar.tsx";
@@ -8,6 +8,7 @@ import {createTheme, GlobalStyles, ThemeProvider} from "@mui/material";
 import {indigo, pink} from "@mui/material/colors";
 import QR from "./QR.tsx";
 import AlertDialog from "./AlertDialog.tsx";
+import * as localforage from "localforage";
 
 const theme = createTheme({
     palette: {
@@ -33,6 +34,19 @@ const App = () => {
     const [qrOpen, setQrOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [alertOpen, setAlertOpen] = useState(false);
+
+    /**
+     * IndexDB から データを取得
+     */
+    useEffect(() => {
+        localforage
+            .getItem('todo-202405-study')
+            .then((values) => setTodos(values as Todo[]))
+    }, []);
+
+    useEffect(() => {
+        localforage.setItem('todo-202405-study', todos);
+    }, [todos]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setText(e.target.value);
