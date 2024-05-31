@@ -14,7 +14,7 @@ type Props = {
 
 const QR = (props: Props) => (
     <TodoBackdrop open={props.open} onClick={props.onClose}>
-        <QRCode value="https://www.google.com/search" />
+        <QRCode value="https://t-ita.github.io/react-todo-app/" />
     </TodoBackdrop>
 );
 // eslint-disable-next-line react-refresh/only-export-components
